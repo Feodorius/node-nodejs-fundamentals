@@ -21,7 +21,7 @@ const snapshot = async () => {
   try {
     const dirData = await readdir(fullPath, { withFileTypes: true, recursive: true });
 
-    for await (const dirent of dirData) {
+    for (const dirent of dirData) {
 
       const { name, parentPath } = dirent;
       const dirPath = join(parentPath, name);
@@ -59,8 +59,8 @@ await snapshot();
 async function createWorkspaceFolder() {
   if (existsSync(folderName)) return;
 
-  const nestedFolderName = "nestedFolder";
-  const nestedFolderFileName = "nestedFile.txt";
+  const nestedFolderName = "subdir";
+  const nestedFolderFileName = "nested.txt";
   const fileName = "file1.txt";
 
   await mkdir(fullPath);
