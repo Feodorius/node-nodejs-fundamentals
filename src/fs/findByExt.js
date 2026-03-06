@@ -1,4 +1,4 @@
-import { readdir, readFile, stat, writeFile } from "fs/promises";
+import { readdir } from "fs/promises";
 import { extname, join, relative, sep } from "path";
 import { cwd } from "process";
 
