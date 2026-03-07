@@ -1,9 +1,44 @@
+import { existsSync } from 'fs';
+import path from 'path';
+import { exit } from 'process';
+import { fileURLToPath, pathToFileURL } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const pluginsFolderPath = path.resolve(__dirname, 'plugins');
+
 const dynamic = async () => {
-  // Write your code here
-  // Accept plugin name as CLI argument
-  // Dynamically import plugin from plugins/ directory
-  // Call run() function and print result
-  // Handle missing plugin case
+  const args = process.argv.slice(2);
+
+  if (!args.length) {
+    console.log("No plugins selected");
+    exit(1);
+  }
+
+  for (const name of args) {
+    const pluginPath = path.resolve(pluginsFolderPath, `${name}.js`);
+    if (!existsSync(pluginPath)) {
+      console.log("Plugin not found");
+      exit(1);
+    }
+
+    try {
+      const moduleUrl = pathToFileURL(pluginPath).href;
+      const plugin = await import(moduleUrl);
+      if (typeof plugin.run === "function") {
+        const result = await plugin.run();
+        console.log(result);
+      }
+
+    } catch (error) {
+      if (error.code === 'ERR_MODULE_NOT_FOUND') {
+        console.error('Plugin not found');
+      } else {
+        console.error(error);
+      }
+      process.exit(1);
+    }
+  }
 };
 
 await dynamic();
