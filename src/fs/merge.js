@@ -34,7 +34,7 @@ const merge = async () => {
       const dirData = await readdir(fullPath);
       const txtFiles = dirData.filter(name => extname(name) === defaultFileExt);
       if (!txtFiles.length) {
-        throw new Error();
+        throw new Error("FS operation failed");
       } else {
         for (const name of txtFiles) {
           const content = await readFile(join(fullPath, name), "utf-8");
@@ -46,7 +46,7 @@ const merge = async () => {
     await writeFile(targetPath, resultParts.join(""), "utf-8");
 
   } catch (error) {
-    console.log("FS operation failed");
+    throw new Error("FS operation failed");
   }
 };
 

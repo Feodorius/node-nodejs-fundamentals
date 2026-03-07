@@ -48,7 +48,7 @@ const snapshot = async () => {
     await writeFile(resultFileName, JSON.stringify(resultJSON));
 
   } catch (error) {
-    console.log("FS operation failed");
+    throw new Error("FS operation failed");
   }
 };
 

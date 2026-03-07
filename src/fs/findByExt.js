@@ -37,7 +37,7 @@ const findByExt = async () => {
     result.forEach(item => console.log(item));
 
   } catch (error) {
-    console.log("FS operation failed");
+     throw new Error("FS operation failed");
   }
 };
 
